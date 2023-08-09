@@ -24,5 +24,6 @@ urlpatterns = [
     path('super-admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('accounts/delete/', include('users.urls')),
-
 ]
+
+handler404 = 'users.views.custom_404'

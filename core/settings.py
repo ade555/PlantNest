@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-89@!sf=!06-72(982$_9=*mzcaukvm%ab98vsfysu*qm!v4f1v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Application definition
@@ -133,6 +133,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+AUTH_USER_MODEL = 'users.User'
 
 # allauth configurations
 AUTHENTICATION_BACKENDS = [

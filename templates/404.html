@@ -1,0 +1,33 @@
+<!-- 404.html template -->
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+        .error-container {
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .error-emoji {
+            font-size: 8rem;
+            margin-bottom: 20px;
+        }
+
+        .error-h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .error-paragraph {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+    </style>
+    <center>
+        <div class="error-container">
+            <div class="error-emoji">😕</div>
+            <h1 class="error-h1">Oops! Page Not Found</h1>
+            <p class="error-paragraph">We couldn't find the page you were looking for.</p>
+            <a class="btn btn-primary" href="/">Go back to Home</a>
+        </div>
+    </center>
+{% endblock content %}
