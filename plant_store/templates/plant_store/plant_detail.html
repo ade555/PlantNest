@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>{{ plant.plant_species }}</h3>
+<p>Category: {{ plant.plant_category.plant_category_name }}</p>
+<p class = "product_price">Price: {{ plant.product_price }}</p>
+<p>Description: {{ plant.product_description }}</p>
+<input type="hidden" name="product_id" value="{{ plant.id }}" class="product_id_{{ plant.id }}">
+<input type="hidden" name="product_name" value="{{ plant.product_name }}" class="product_name_{{ plant.id }}">
+<input type="number" name="quantity" value="1" class="product_quantity_{{ plant.id }}">
+<button type="button" class="add-to-cart-btn" data-product-id="{{ plant.id }}">Add to Cart</button>
+{% endblock content %}
+
