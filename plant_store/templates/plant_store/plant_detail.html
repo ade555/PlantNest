@@ -10,5 +10,6 @@
 <input type="number" name="quantity" value="1" class="product_quantity_{{ plant.id }}">
 {% if plant.get_product_availability %}Out Of Stock{% endif %}
 <button type="button" class="add-to-cart-btn" data-product-id="{{ plant.id }}">Add to Cart</button>
+<a href="{% url 'add_review' product_id=plant.id %}">Review product</a>
 {% endblock content %}
 

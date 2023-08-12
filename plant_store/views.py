@@ -1,12 +1,12 @@
 from django.http import JsonResponse
-from django.views.generic import View, ListView, DetailView
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.contenttypes.models import ContentType
+from django.views.generic import View, ListView, DetailView, CreateView
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.urls import reverse_lazy
 
-from .models import Plant, Products, Cart, CartItem, UserWishList, WishListItem
+from .models import Plant, Products, Cart, CartItem, UserWishList, WishListItem, ProductReview
+from .forms import ReviewForm
 
 
 class PlantListView(ListView):
@@ -93,3 +93,14 @@ class CartView(View):
 
         response_data = {'message': 'Item added to cart'}
         return JsonResponse(response_data)
+
+class ProductReview(CreateView):
+    model = ProductReview
+    form_class = ReviewForm
+    success_url = reverse_lazy('plants')  # Redirect to the product list after submission
+
+    def form_valid(self, form):
+        product = get_object_or_404(Products, id=self.kwargs['product_id'])
+        form.instance.product = product
+        form.instance.user = self.request.user
+        return super().form_valid(form)

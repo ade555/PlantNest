@@ -110,3 +110,13 @@ class WishListItem(models.Model):
 
     def __str__(self):
         return f"Wish list item - {self.product.product_name}"
+
+
+class ProductReview(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Review for {self.product.product_name} by {self.user.username}"

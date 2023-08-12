@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Plant, PlantCategory, Products, CartItem, Cart
+from .models import Plant, PlantCategory, CartItem, Cart, ProductReview
 
 from core.admin import custom_admin
 
@@ -40,7 +40,7 @@ class CartAdmin(admin.ModelAdmin):
 
 # Register your models here.
 custom_admin.register(Plant)
-custom_admin.register(Products)
 custom_admin.register(PlantCategory)
 custom_admin.register(CartItem)
 custom_admin.register(Cart, CartAdmin)
+custom_admin.register(ProductReview)
