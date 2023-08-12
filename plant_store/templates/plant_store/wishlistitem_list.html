@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>Wish List</h3>
+{% for wish in wishes %}
+  <p>Product: {{ wish.product.product_name }}</p>
+  <p class="product_price">Price: ${{ wish.product.product_price }}</p>
+  <p>Description: {{ wish.product.product_description }}</p>
+  
+  <input type="hidden" name="product_id" value="{{ wish.product.id }}" class="product_id_{{ wish.product.id }}">
+  <input type="hidden" name="product_name" value="{{ wish.product.product_name }}" class="product_name_{{ wish.product.id }}">
+  <input type="hidden" name="quantity" value="1" class="product_quantity_{{ wish.product.id  }}">
+  
+  <button type="button" class="remove-from-wishlist-btn" data-product-id="{{ wish.product.id }}">Remove from Wish List</button>
+  <button type="button" class="add-to-cart-btn wishlist-add-to-cart" data-product-id="{{ wish.product.id }}">Add to Cart</button>
+  
+  {% if wish.product.get_product_availability %}Out Of Stock{% endif %}
+{% endfor %}
+{% endblock content %}

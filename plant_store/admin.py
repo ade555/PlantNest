@@ -41,6 +41,5 @@ class CartAdmin(admin.ModelAdmin):
 # Register your models here.
 custom_admin.register(Plant)
 custom_admin.register(PlantCategory)
-custom_admin.register(CartItem)
 custom_admin.register(Cart, CartAdmin)
 custom_admin.register(ProductReview)

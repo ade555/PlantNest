@@ -5,6 +5,24 @@
   <ul>
     {% for cart_item in cart_items %}
       <li>{{ cart_item.product.product_name }} - Quantity: {{ cart_item.quantity }}</li>
+      <form method="post" action="{% url 'cart' %}">
+        {% csrf_token %}
+        <input type="hidden" name="update_quantity" value="true">
+        <input type="hidden" name="cart_item_id" value="{{ cart_item.id }}">
+        <input type="number" name="new_quantity" value="{{ cart_item.quantity }}" min="1">
+        <button type="submit">Update Quantity</button>
+      </form>
+      <form method="post" action="{% url 'cart' %}">
+        {% csrf_token %}
+        <input type="hidden" name="remove" value="true">
+        <input type="hidden" name="cart_item_id" value="{{ cart_item.id }}">
+        <button type="submit">Remove</button>
+      </form>
+      {%empty%}
+      <h2>You have no items in your cart</h2>
     {% endfor %}
+    <p>Total price: ${{total_amount}}</p>
+    <p>Total products amount: {{ total_cart_quantity|default:0  }}</p>
+    <a href="{% url 'empty_cart' %}" class="empty-cart-btn">Empty Cart</a>
   </ul>
 {% endblock %}

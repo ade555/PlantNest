@@ -1,6 +1,7 @@
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 from django.views.generic import View, ListView, DetailView, CreateView
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -13,13 +14,45 @@ class PlantListView(ListView):
     model = Plant
     context_object_name = 'plants'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)  # Get the default context
+        
+        id = Plant.objects.all()
+        context['id'] = id
+        return context
+
 class WishListView(ListView):
-        model = UserWishList
+    model = WishListItem
+    context_object_name = 'wishes'
+
+
+class RemoveFromWishlistView(View):
+    def get(self, request, *args, **kwargs):
+        product_id = request.GET.get("id")
+        product = get_object_or_404(Products, id=product_id)
+
+        wish = get_object_or_404(UserWishList, user=request.user)
+        wish_item = WishListItem.objects.filter(wishlist=wish, product=product).first()
+
+        if wish_item:
+            wish_item.delete()
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"error": "Item not found in the wishlist"}, status=400)
 
 class PlantDetailView(DetailView):
     model = Plant
     context_object_name ='plant'
     template_name = 'plant_store/plant_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)  # Get the default context
+        
+        id = Plant.objects.all()
+        context['id'] = id
+        return context
+
+
 
 def add_to_cart(request):
     product_id = request.GET.get('id')
@@ -41,6 +74,12 @@ def add_to_cart(request):
         'total_cart_items': cart.get_total_quantity()
     })
 
+@login_required
+def empty_cart(request):
+    cart = Cart.objects.get(user=request.user)
+    cart.cartitem_set.all().delete()
+    cart.delete()
+    return redirect('cart')  # Redirect back to the cart page
 
 def add_to_wishlist(request):
     product_id = request.GET.get('id')
@@ -70,16 +109,38 @@ def add_to_wishlist(request):
 class CartView(View):
     def get(self, request, *args, **kwargs):
         user = request.user
-        cart_item_count = CartItem.objects.filter(cart__user=user).count() if user.is_authenticated else 0
 
         cart_items = CartItem.objects.filter(cart__user=user) if user.is_authenticated else []
+        total_amount = sum(cart_item.product.product_price * cart_item.quantity for cart_item in cart_items)
 
         context = {
             'cart_items': cart_items,
-            'cart_item_count': cart_item_count,
+            'total_amount': total_amount,
         }
         return render(request, "plant_store/cart.html", context)
+    
+    def post(self, request, *args, **kwargs):
+        cart_item_id = request.POST.get('cart_item_id')
+        cart_item = get_object_or_404(CartItem, id=cart_item_id, cart__user=request.user)
 
+        # Check if a 'remove' action is provided. This will mean that the user wants to remove an item from their cart
+        if 'remove' in request.POST:
+            # Remove the cart item and the cart if it becomes empty
+            cart = cart_item.cart
+            cart_item.delete()
+            if not cart.cartitem_set.exists():
+                cart.delete()
+            return redirect('cart')
+        
+        # Check if a 'update_quantity' action is provided. This will mean that the user wants to increase or reduce the number of an item in their cart
+        elif 'update_quantity' in request.POST:
+            # Get new quantity of product if user decides to update the quantity
+            new_quantity = int(request.POST.get('new_quantity'))
+            # update the new quantity
+            cart_item.quantity = new_quantity
+            # save the new quantity
+            cart_item.save()
+            return redirect('cart')
 
 class ProductReview(CreateView):
     model = ProductReview

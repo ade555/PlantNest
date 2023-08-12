@@ -91,7 +91,7 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f"Wish list - {self.product.product_name} - Quantity: {self.quantity}"
+        return f"Cart items for - {self.product.product_name} - Quantity: {self.quantity}"
 
 class UserWishList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
