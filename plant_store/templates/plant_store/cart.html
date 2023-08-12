@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-hello
+  <h2>Your Cart</h2>
+  <ul>
+    {% for cart_item in cart_items %}
+      <li>{{ cart_item.product.product_name }} - Quantity: {{ cart_item.quantity }}</li>
+    {% endfor %}
+  </ul>
 {% endblock %}

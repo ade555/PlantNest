@@ -69,30 +69,17 @@ def add_to_wishlist(request):
 
 class CartView(View):
     def get(self, request, *args, **kwargs):
-        products = Products.objects.all()
         user = request.user
         cart_item_count = CartItem.objects.filter(cart__user=user).count() if user.is_authenticated else 0
 
+        cart_items = CartItem.objects.filter(cart__user=user) if user.is_authenticated else []
+
         context = {
-            'products': products,
+            'cart_items': cart_items,
             'cart_item_count': cart_item_count,
         }
-        return render(request, 'product_listing.html', context)
-    def post(self, request, *args, **kwargs):
-        product_id = request.POST.get('product_id')
-        quantity = int(request.POST.get('quantity', 1))
+        return render(request, "plant_store/cart.html", context)
 
-        product = Products.objects.get(id=product_id)
-        user = request.user
-        cart, created = Cart.objects.get_or_create(user=user)
-
-        cart_item, item_created = CartItem.objects.get_or_create(cart=cart, product=product)
-        if not item_created:
-            cart_item.quantity += quantity
-            cart_item.save()
-
-        response_data = {'message': 'Item added to cart'}
-        return JsonResponse(response_data)
 
 class ProductReview(CreateView):
     model = ProductReview
