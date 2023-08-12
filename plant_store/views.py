@@ -6,49 +6,20 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from .models import Plant, Products, Cart, CartItem
+from .models import Plant, Products, Cart, CartItem, UserWishList, WishListItem
 
 
 class PlantListView(ListView):
     model = Plant
     context_object_name = 'plants'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        
-        for plant in context['plants']:
-            plant.out_of_stock = plant.quantity_available == 0
-        
-        return context
+class WishListView(ListView):
+        model = UserWishList
 
 class PlantDetailView(DetailView):
-    model = Products
+    model = Plant
     context_object_name ='plant'
     template_name = 'plant_store/plant_detail.html'
-
-# @login_required
-# def add_to_cart(request):
-#     cart_item = {}
-#     cart_item[str(request.GET['id'])] = {
-#         "item_name": request.GET['product_name'],
-#         "quantity": request.GET['quantity'],
-#     }
-#     if 'cart_data_session_obj' in request.session:
-#         if str(request.GET['id']) in request.session['cart_data_session_obj']:
-#             cart_info_data = request.session['cart_data_session_obj']
-#             cart_info_data[str(request.GET['id'])]['quantity'] = cart_item[str(request.GET['id'])]
-#             cart_info_data.update(cart_info_data)
-#             request.session['cart_data_session_obj'] = cart_info_data
-#         else:
-#             cart_info_data = request.session['cart_data_session_obj']
-#             cart_info_data.update(cart_item)
-#             request.session['cart_data_session_obj'] = cart_info_data
-#     else:
-#         request.session['cart_data_session_obj'] = cart_item
-#     return JsonResponse({
-#         'data':request.session['cart_data_session_obj'],
-#         'total_cart_items': len(request.session['cart_data_session_obj'])
-#         })
 
 def add_to_cart(request):
     product_id = request.GET.get('id')
@@ -68,6 +39,31 @@ def add_to_cart(request):
 
     return JsonResponse({
         'total_cart_items': cart.get_total_quantity()
+    })
+
+
+def add_to_wishlist(request):
+    product_id = request.GET.get('id')
+    product_name = request.GET.get('product_name')
+
+    product = get_object_or_404(Products, id=product_id)
+
+    wish, created = UserWishList.objects.get_or_create(user=request.user)
+
+    # Check if the item already exists in the wishlist
+    wish_item = WishListItem.objects.filter(wishlist=wish, product=product).first()
+
+    if wish_item:
+        # Item already exists, no need to add it again
+        return JsonResponse({
+            'error': 'Item already exists in the wishlist'
+        }, status=400)
+    else:
+        # Create a new wishlist item since it doesn't exist
+        wish_item = WishListItem.objects.create(wishlist=wish, product=product)
+
+    return JsonResponse({
+        'total_wish_items': wish.get_total_items()
     })
 
 

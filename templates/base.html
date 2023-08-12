@@ -12,7 +12,8 @@
 </head>
 <body>
     <main>
-        <p class="cart-count">{{ total_cart_quantity }}</p>
+        <p class="cart-count">{{ total_cart_quantity|default:0  }}</p>
+        <p class="wish-count">{{ total_wish_items|default:0  }}</p>
   
         {% block content %}
         {% endblock content %}

@@ -1,6 +1,5 @@
 from django.contrib import admin
 from .models import Plant, PlantCategory, Products, CartItem, Cart
-from .models import Cart, CartItem
 
 from core.admin import custom_admin
 

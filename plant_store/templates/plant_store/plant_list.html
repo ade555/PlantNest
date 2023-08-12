@@ -11,5 +11,7 @@
   <input type="hidden" name="product_name" value="{{ plant.product_name }}" class="product_name_{{ plant.id }}">
   <input type="hidden" name="quantity" value="1" class="product_quantity_{{ plant.id }}">
   <button type="button" class="add-to-cart-btn" data-product-id="{{ plant.id }}">Add to Cart</button>
+  <button type="button" class="add-to-wish-btn" data-product-id="{{ plant.id }}">Wishlist</button>
+  {% if plant.get_product_availability %}Out Of Stock{% endif %}
 {% endfor %}
 {% endblock content %}

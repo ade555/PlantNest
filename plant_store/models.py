@@ -45,6 +45,9 @@ class Products(models.Model):
     product_image = models.ImageField(upload_to="product_images")
     quantity_available = models.PositiveIntegerField()
 
+    def get_product_availability(self):
+        return self.quantity_available == 0
+
     def __str__(self):
         return f"{self.product_name}"
 
@@ -78,7 +81,6 @@ class Cart(models.Model):
         total_quantity = sum(item.quantity for item in cart_items)
         return total_quantity
     
-    
     class Meta:
         verbose_name = "Order"
         verbose_name_plural = "Orders"
@@ -89,4 +91,22 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f"CartItem - {self.product.product_name} - Quantity: {self.quantity}"
+        return f"Wish list - {self.product.product_name} - Quantity: {self.quantity}"
+
+class UserWishList(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_total_items(self):
+        return self.wishlistitem_set.count()
+
+    class Meta:
+        verbose_name = "Wishlist"
+        verbose_name_plural = "Wishlists"
+
+class WishListItem(models.Model):
+    wishlist = models.ForeignKey(UserWishList, on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Wish list item - {self.product.product_name}"

@@ -1,0 +1,43 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mt-4">Dashboard</h1>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">
+                    <h5>Total Registered Users</h5>
+                    <p>{{ total_users }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">
+                    <h5>Total Stock</h5>
+                    <p>{{ total_stock|default:0 }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">
+                    <h5>Total Products</h5>
+                    <p>{{ total_products }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">
+                    <h5>Total Orders</h5>
+                    <p>{{ total_orders }}</p>
+                </div>
+            </div>
+        </div>
+        <!-- Add similar card blocks for other statistics -->
+    </div>
+</div>
+{% endblock %}
