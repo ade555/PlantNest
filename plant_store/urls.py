@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import PlantListView, add_to_cart, PlantDetailView, CartView, add_to_wishlist, ProductReview, WishListView, RemoveFromWishlistView, empty_cart, AccessoryListView, AccessoryDetailView
-
+app_name = "plant_store"
 urlpatterns = [
     path('plants/', PlantListView.as_view(), name = 'plants'),
     path('plants/<int:pk>/', PlantDetailView.as_view(), name='plant-detail'),

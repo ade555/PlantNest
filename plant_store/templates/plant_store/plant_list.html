@@ -3,18 +3,21 @@
 {% block content %}
 <section class="container-fluid p-3 mt-5">
   <h3 class="text-center">Plant List</h3>
+  <form method="get">
+    <input type="text" name="q" placeholder="Search products">
+    <button type="submit">Search</button>
+</form>
 <div>
     <div class="container mt-5">
       <div class="row">
-
         {% for plant, product_id in plants_and_ids %}
 
         <div class="col-lg-3 col-sm-9 col-md-6 mb-5 mx-auto ">
           <div class="card">
-            <img src="{{plant.product_image.url}}" height="280" class="card-img-top"  alt="">
+            <img src="{{plant.product_image.url}}" height="280" class="card-img-top"  alt="{{ plant.product_name }}">
             <div class="card-body">
-              <h5 class="card-title">{{category}}</h5>
-              <p class="card-text">{{ plant.product_description }}</p>
+              <h5 class="card-title text-lowercase">{{plant.product_name|capfirst}}</h5>
+              <p class="card-text">{{ plant.product_description|truncatechars:100 }}</p>
               <strong class="card-price product_price">${{ plant.product_price }}</strong>
              <!-- product info to send to server -->
              <input type="hidden" name="product_id" value="{{ product_id }}" class="product_id_{{ product_id }}">
@@ -34,7 +37,7 @@
                 <button role="button" class="add-to-cart-btn btn-1 btn" disabled>Login to add to cart</button>
                 {% endif %}
               </div>
-              <a href="{% url 'plant-detail' pk=product_id %}">Details</a>
+              <a href="{% url 'plant_store:plant-detail' pk=product_id %}">Details</a>
             </div>
           </div>
         </div>

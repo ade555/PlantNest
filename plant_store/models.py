@@ -29,12 +29,18 @@ class PlantCategory(models.Model):
 
     def __str__(self):
         return self.plant_category_name
+    class Meta:
+        verbose_name_plural = "Plants Categories"
+        verbose_name = "Plant Category"
 
 class AccessoryCategory(models.Model):
     acessory_category_name = models.CharField(max_length=20, choices=ACCESSORY_CATEGORIES, unique =True)
 
     def __str__(self):
         return self.acessory_category_name
+    class Meta:
+        verbose_name_plural = "Accessories Categories"
+        verbose_name = "Acessory Category"
 
 class Products(models.Model):
     product_name = models.CharField(max_length=255)
@@ -60,6 +66,9 @@ class Plant(Products):
 
 class Accessory(Products):
     accessory_category = models.ForeignKey(AccessoryCategory, on_delete=models.CASCADE)
+    class Meta:
+        verbose_name = "Plant Accessory"
+        verbose_name_plural = "Plant Acessories"
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

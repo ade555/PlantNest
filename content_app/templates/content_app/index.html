@@ -31,14 +31,14 @@
                <div class="col-lg-3 col-md-6 col-12 col-sm-12 ">
                  <article class="bg-white border border-1 rounded-2 ">
                      <div class="  p-1 p-md-3">
-                         <img src="static/image/Untitled8.png" class="img-fluid" alt="">
+                         <img src="{{plant.product_image.url}}" class="img-fluid" alt="">
                      </div>
                      <div class="p-2" style="border-bottom-left-radius: 6px;border-bottom-right-radius: 6px;">
                          <h4 class="mx-2 fw-semibold" style="font-family: 'Montserrat', sans-serif;">{{plant.product_name}}</h4>
                          <p class="mx-2">{{plant.product_description|truncatechars:100}}</p>
                          <strong class="mb-1 mx-2">${{plant.product_price}}</strong>
                          <article class="d-flex justify-content-between">
-                             <a href="#" class="p-2 mx-2 mt-2 my-md-2 text-decoration-none text-white rounded-2 " style="background-color: #26a826;">Add to cart</a>
+                             <a href="{% url 'plant_store:plants' %}" class="p-2 mx-2 mt-2 my-md-2 text-decoration-none text-white rounded-2 " style="background-color: #26a826;">View in Cart</a>
                          </article>
                      </div>
                  </article>
@@ -60,14 +60,14 @@
              <div class="col-lg-3 col-sm-12 col-md-6">
                  <article class="bg-white border border-1 rounded-2 p-2 ">
                      <div class="p-3">
-                         <img src="static/image/spade_noun_002_34947-removebg-preview.png" class="img-fluid " alt="">
+                         <img src="{{accessory.product_image.url}}" class="img-fluid " alt="">
                      </div>
                      <div class=" p-2">
                          <h4 style="font-family: 'Montserrat', sans-serif;" class="fw-semibold">{{accessory.product_name}}</h4>
                          <p>{{accessory.product_description|truncatechars:100}}</p>
                          <strong class="mb-1">${{accessory.product_price}}</strong>
                          <article class="d-flex justify-content-between">
-                            <a href="#" class="p-2 mx-2 mt-2 my-md-2 text-decoration-none text-white rounded-2 " style="background-color: #26a826;">Add to cart</a>
+                            <a href="{% url 'plant_store:plants' %}" class="p-2 mx-2 mt-2 my-md-2 text-decoration-none text-white rounded-2 " style="background-color: #26a826;">View in Cart</a>
                         </article>
                      </div>
                  </article>

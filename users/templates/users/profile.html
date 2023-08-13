@@ -38,6 +38,7 @@
               <input type="email" class="form-control" id="email" value="{{ user.phone_number }}" readonly>
             </div>
             <a href="{% url 'users:update-profile' %}" class="btn text-bg-color text-white my-3"><b>Update Profile</b></a>
+            <a href="{% url 'users:delete-profile' %}" class="btn btn-danger text-white my-3"><b>Delete Profile</b></a>
           </form>
         </div>
     </div>

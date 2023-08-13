@@ -22,7 +22,7 @@
                     <td>{{ cart_item.product.product_name }}</td>
                     <td>${{ cart_item.product.product_price }} each</td>
                     <td>
-                      <form method="post" action="{% url 'cart' %}">
+                      <form method="post" action="{% url 'plant_store:cart' %}">
                         {% csrf_token %}
                         <input type="hidden" name="update_quantity" value="true">
                         <input type="hidden" name="cart_item_id" value="{{ cart_item.id }}">
@@ -31,7 +31,7 @@
                     </td>
                     <td>
                         <div>
-                            <form method="post" action="{% url 'cart' %}">
+                            <form method="post" action="{% url 'plant_store:cart' %}">
                               {% csrf_token %}
                               <input type="hidden" name="remove" value="true">
                               <input type="hidden" name="cart_item_id" value="{{ cart_item.id }}">

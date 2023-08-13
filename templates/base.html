@@ -20,9 +20,6 @@
     <link rel="stylesheet" href="{% static 'css/catalog.css' %}">
     <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
-
-    {% comment %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}"> {% endcomment %}
     <title>{% block title %}{{ block.super|default:"PlantNest" }}{% endblock title %}</title>
 </head>
 
@@ -43,13 +40,13 @@
             <div class="collapse overflow-hidden navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-5 ms-auto mb-2 mb-lg-0 gap-3 fw-semibold">
                     <li class="nav-item">
-                        <a class="nav-link   scrollto" aria-current="page" href="#Home">Home</a>
+                        <a class="nav-link   scrollto" aria-current="page" href="{% url 'content_app:home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  scrollto" href="#About">Contact</a>
+                        <a class="nav-link  scrollto" href="{% url 'content_app:contact' %}">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link scrollto " href="#About">Accessories</a>
+                        <a class="nav-link scrollto " href="{% url 'plant_store:accessories' %}">Accessories</a>
                     </li>
                     <li class="dropdown nav-item">
                         <a href="#" role="list" class="dropdown-toggle nav-link text-decoration-none text-dark"
@@ -59,20 +56,25 @@
                         <ul class="dropdown-menu">
                             <li><a href="#" class="dropdown-item">Home</a></li>
                             <li><a href="#" class="dropdown-item">Contact</a></li>
-                            <li><a href="#" class="dropdown-item">Accessories/a></li>
+                            <li><a href="#" class="dropdown-item">Accessories</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  scrollto" href="#About">Catalog</a>
+                        <a class="nav-link  scrollto" href="{% url 'plant_store:plants' %}">Plant Catalog</a>
                     </li>
-
                 </ul>
-                <form class="d-flex mx-4" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success rounded-2 fw-semibold" type="submit">Search</button>
-                </form>
-                <a href="#" class="px-3 p-1 we text-decoration-none fw-semibold mx-2  rounded-2">Login</a>
-                <a href="#" class="px-3 p-1 we text-decoration-none fw-semibold mx-2  rounded-2">Sign Up</a>
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'account_logout' %}" class="px-3 p-1 we text-decoration-none fw-semibold mx-2  rounded-2">Logout</a>
+                <a href="{% url 'users:view-profile' %}" class="px-3 p-1 we text-decoration-none fw-semibold mx-2  rounded-2"><i class="bi bi-gear"></i>
+                </a>
+                <a href="{% url 'plant_store:cart' %}" class="px-3 p-1 we text-decoration-none fw-semibold mx-2  rounded-2"><i class="bi bi-cart4"></i> {{ total_cart_quantity|default:0 }}
+                </a>
+                <a href="{% url 'plant_store:wishlist' %}" class="px-3 p-1 we text-decoration-none fw-semibold mx-2  rounded-2">Wishlist
+                </a>
+                {% else %}
+                <a href="{% url 'account_login' %}" class="px-3 p-1 we text-decoration-none fw-semibold mx-2  rounded-2">Login</a>
+                <a href="{% url 'account_signup' %}" class="px-3 p-1 we text-decoration-none fw-semibold mx-2  rounded-2">Sign Up</a>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -106,9 +108,6 @@
         </div>
     </div>
     <main>
-        <p class="cart-count">{{ total_cart_quantity|default:0 }}</p>
-        <p class="wish-count">{{ total_wish_items|default:0 }}</p>
-
         {% block content %}
         {% endblock content %}
 

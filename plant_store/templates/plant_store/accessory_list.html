@@ -1,18 +1,50 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h3>Accessories List</h3>
-{% for accessory, product_id in accessories_and_ids %}
-  <p>Category: {{ accessory.accessory_category.acessory_category_name }}</p>
-  <p class="product_price">Price: {{ accessory.product_price }}</p>
-  <p>Description: {{ accessory.product_description }}</p>
-  <p>Product id: {{ product_id }}</p>
-  <input type="hidden" name="product_id" value="{{ product_id }}" class="product_id_{{ product_id }}">
-  <input type="hidden" name="product_name" value="{{ accessory.product_name }}" class="product_name_{{ product_id }}">
-  <input type="hidden" name="quantity" value="1" class="product_quantity_{{ product_id }}">
-  <button type="button" class="add-to-cart-btn" data-product-id="{{ product_id }}">Add to Cart</button>
-  <button type="button" class="add-to-wish-btn" data-product-id="{{ product_id }}">Wishlist</button>
-  <a href="{% url 'accessory-detail' pk=product_id %}">Details</a>
-  {% if plant.get_product_availability %}Out Of Stock{% endif %}
-{% endfor %}
+<section class="container-fluid p-3 mt-5">
+  <h3 class="text-center">Our Accessories List</h3>
+  <div>
+    <div class="container mt-5">
+      <div class="row">
+        {% for accessory, product_id in accessories_and_ids %}
+
+        <div class="col-lg-3 col-sm-9 col-md-6 mb-5 mx-auto ">
+          <div class="card">
+            <img src="{{accessory.product_image.url}}" height="280" class="card-img-top"
+              alt="{{ accessory.product_name }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ accessory.product_name }}</h5>
+              <p class="card-text">{{ accessory.product_description|truncatechars:100 }}</p>
+              <strong class="card-price product_price">${{ accessory.product_price }}</strong>
+              <!-- product info to send to server -->
+              <input type="hidden" name="product_id" value="{{ product_id }}" class="product_id_{{ product_id }}">
+              <input type="hidden" name="product_name" value="{{ plant.product_name }}"
+                class="product_name_{{ product_id }}">
+              <input type="hidden" name="quantity" value="1" class="product_quantity_{{ product_id }}">
+              <!-- product info to send to server end-->
+
+              <div class="" style="display: flex;justify-content:space-between;">
+                {% if request.user.is_authenticated %}
+                {% if not plant.get_product_availability %}
+                <button role="button" class="add-to-cart-btn btn-1 btn" disabled>Out of stock</button>
+                {% else %}
+                <button role="button" class="add-to-cart-btn" data-product-id="{{ product_id }}"><i
+                    class="bi bi-cart4 fs-3 cart"></i></button>
+                {% endif %}
+                <button role="button" class="btn btn-1 add-to-wish-btn" data-product-id="{{ product_id }}"><i
+                    class="bi bi-heart"></i></button>
+                {% else %}
+                <button role="button" class="add-to-cart-btn btn-1 btn" disabled>Login to add to cart</button>
+                {% endif %}
+              </div>
+              <a href="{% url 'plant_store:accessory-detail' pk=product_id %}">Details</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
 {% endblock content %}

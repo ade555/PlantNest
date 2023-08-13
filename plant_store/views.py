@@ -23,6 +23,13 @@ class PlantListView(ListView):
         context['plants_and_ids'] = plants_and_ids
         context['plant_categories'] = plant_categories
         return context
+    
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Plant.objects.filter(product_name__icontains=query)
+        else:
+            return Plant.objects.all()
 
 class WishListView(ListView):
     model = WishListItem
@@ -68,6 +75,13 @@ class AccessoryListView(ListView):
         accessories_and_ids = zip(context['accessories'], product_id)
         context['accessories_and_ids'] = accessories_and_ids
         return context
+        
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Accessory.objects.filter(product_name__icontains=query)
+        else:
+            return Accessory.objects.all()
 
 class AccessoryDetailView(DetailView):
     model = Accessory

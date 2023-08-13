@@ -28,7 +28,7 @@
                           {% if wish.product.get_product_availability %}
                           <button role="button" class="add-to-cart-btn btn btn-styl mx-3" disabled>Out of stock</button>
                       {% else %}
-                          <button type="button" class="mx-3 add-to-cart-btn btn btn-style" data-product-id="{{ product_id }}">Add to Cart</button>
+                          <button type="button" class="mx-3 add-to-cart-btn btn btn-style" data-product-id="{{ wish.product_id }}">Add to Cart</button>
                       {%endif%}
                         </div>
                     </td>
