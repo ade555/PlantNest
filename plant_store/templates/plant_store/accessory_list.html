@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>Accessories List</h3>
+{% for accessory, product_id in accessories_and_ids %}
+  <p>Category: {{ accessory.accessory_category.acessory_category_name }}</p>
+  <p class="product_price">Price: {{ accessory.product_price }}</p>
+  <p>Description: {{ accessory.product_description }}</p>
+  <p>Product id: {{ product_id }}</p>
+  <input type="hidden" name="product_id" value="{{ product_id }}" class="product_id_{{ product_id }}">
+  <input type="hidden" name="product_name" value="{{ accessory.product_name }}" class="product_name_{{ product_id }}">
+  <input type="hidden" name="quantity" value="1" class="product_quantity_{{ product_id }}">
+  <button type="button" class="add-to-cart-btn" data-product-id="{{ product_id }}">Add to Cart</button>
+  <button type="button" class="add-to-wish-btn" data-product-id="{{ product_id }}">Wishlist</button>
+  <a href="{% url 'accessory-detail' pk=product_id %}">Details</a>
+  {% if plant.get_product_availability %}Out Of Stock{% endif %}
+{% endfor %}
+{% endblock content %}

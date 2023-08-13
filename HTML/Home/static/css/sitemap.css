@@ -1,0 +1,15 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+header{
+    background-image:
+    linear-gradient(60deg, rgba(0, 0, 0, 0.54), rgba(128, 128, 128, 0.452)),
+    
+    url(../image/2_1.webp);
+    height: 550px;
+    /* filter: drop-shadow(1); */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}

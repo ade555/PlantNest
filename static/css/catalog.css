@@ -1,0 +1,54 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+:root{
+    --text-color:#78A300;
+    --background: #78A300;
+    --font-family:'Bebas Neue',sans-serif;
+}
+.text-color{
+    color: #26a826;
+}
+.text-bg-color{
+    background-color: #26a826;
+}
+.text-bg-color:hover{
+    background-color: #26a826;
+}
+.add-to-cart-btn[disabled] {
+    cursor: not-allowed;
+  }
+.name{
+    font-family: var(--font-family);
+}
+
+
+.nav-and-tab:hover{
+    border: none;
+  background-color:#26a826;
+  color: white;
+}
+
+.btn-1{
+    background-color:#26a826;
+    color: white;
+}
+.btn-1:hover{
+    background-color:#26a826;
+    color: white;
+}
+
+.cart{
+    color:#26a826;
+}
+.card-title{
+    color:#26a826;
+    font-family: var(--font-family);
+}
+
+
+.card-price{
+    color:#26a826;
+}

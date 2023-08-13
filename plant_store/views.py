@@ -6,9 +6,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.urls import reverse_lazy
 
-from .models import Plant, Products, Cart, CartItem, UserWishList, WishListItem, ProductReview
+from .models import Plant, Products, Cart, CartItem, UserWishList, WishListItem, ProductReview, Accessory, PlantCategory
 from .forms import ReviewForm
-
 
 class PlantListView(ListView):
     model = Plant
@@ -17,14 +16,17 @@ class PlantListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)  # Get the default context
         
-        id = Plant.objects.all()
-        context['id'] = id
+        plant_categories = list(PlantCategory.objects.values_list('plant_category_name', flat=True).distinct())
+        products = Products.objects.filter(product_type="plant")
+        product_id = [product.id for product in products]
+        plants_and_ids = zip(context['plants'], product_id)
+        context['plants_and_ids'] = plants_and_ids
+        context['plant_categories'] = plant_categories
         return context
 
 class WishListView(ListView):
     model = WishListItem
     context_object_name = 'wishes'
-
 
 class RemoveFromWishlistView(View):
     def get(self, request, *args, **kwargs):
@@ -44,16 +46,43 @@ class PlantDetailView(DetailView):
     model = Plant
     context_object_name ='plant'
     template_name = 'plant_store/plant_detail.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)  # Get the default context
+        
+        plant = self.object  # The Plant instance for this view
+        product_id = plant.products_ptr.id  # Get the ID of the associated Products instance
+
+        context['product_id'] = product_id
+        return context
+
+class AccessoryListView(ListView):
+    model = Accessory
+    context_object_name = 'accessories'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)  # Get the default context
         
-        id = Plant.objects.all()
-        context['id'] = id
+        products = Products.objects.filter(product_type="accessory")
+        product_id = [product.id for product in products]
+        accessories_and_ids = zip(context['accessories'], product_id)
+        context['accessories_and_ids'] = accessories_and_ids
         return context
 
+class AccessoryDetailView(DetailView):
+    model = Accessory
+    context_object_name = 'accessory'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)  # Get the default context
+        
+        accessory = self.object  # The Accessory instance for this view
+        product_id = accessory.products_ptr.id  # Get the ID of the associated Products instance
 
+        context['product_id'] = product_id
+        return context
+
+@login_required
 def add_to_cart(request):
     product_id = request.GET.get('id')
     quantity = request.GET.get('quantity')
@@ -81,6 +110,7 @@ def empty_cart(request):
     cart.delete()
     return redirect('cart')  # Redirect back to the cart page
 
+@login_required
 def add_to_wishlist(request):
     product_id = request.GET.get('id')
     product_name = request.GET.get('product_name')
@@ -145,7 +175,9 @@ class CartView(View):
 class ProductReview(CreateView):
     model = ProductReview
     form_class = ReviewForm
+    context_object_name = 'product'
     success_url = reverse_lazy('plants')  # Redirect to the product list after submission
+    
 
     def form_valid(self, form):
         product = get_object_or_404(Products, id=self.kwargs['product_id'])

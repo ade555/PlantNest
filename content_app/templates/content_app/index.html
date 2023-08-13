@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    header{
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-image: url('{% static "images/home-banner.jpg"%}');
+        height: 550px;
+    }
+</style>
+<!-- !HEADER  -->
+<header>
+    <div class="d-flex container justify-content-center align-items-start " style="flex-direction: column;
+    height: 550px;">
+    <h1 class="fw-bold " style="font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem;">From The garden <br> to your Hearts</h1>
+     <p class="fs-4 " style="font-weight: 500; font-family: 'Concert One', cursive;"> A bouquet of happiness, delivered to your doorsteps.</p>
+     <a href="#" class="p-2 btn btn-outline-success w  fw-semibold">Shop Now</a>
+    </div>
+ </header>
+ <!-- todo section 1 -->
+ <div class="d-flex align-items-center  p-2 justify-content-center m-4 " style="font-family: 'Bebas Neue', sans-serif;">
+     <h2 class="fs-1">Our Plants</h2>
+ </div>
+     <section>
+         <div class="container">
+             <div class="row g-4">
+                {% for plant, id in sliced_plants_and_ids %}
+               <div class="col-lg-3 col-md-6 col-12 col-sm-12 ">
+                 <article class="bg-white border border-1 rounded-2 ">
+                     <div class="  p-1 p-md-3">
+                         <img src="static/image/Untitled8.png" class="img-fluid" alt="">
+                     </div>
+                     <div class="p-2" style="border-bottom-left-radius: 6px;border-bottom-right-radius: 6px;">
+                         <h4 class="mx-2 fw-semibold" style="font-family: 'Montserrat', sans-serif;">{{plant.product_name}}</h4>
+                         <p class="mx-2">{{plant.product_description|truncatechars:100}}</p>
+                         <strong class="mb-1 mx-2">${{plant.product_price}}</strong>
+                         <article class="d-flex justify-content-between">
+                             <a href="#" class="p-2 mx-2 mt-2 my-md-2 text-decoration-none text-white rounded-2 " style="background-color: #26a826;">Add to cart</a>
+                         </article>
+                     </div>
+                 </article>
+               </div>
+               {% endfor %}
+           </div>
+     </section>
+ 
+ 
+ 
+ <!-- section 2 -->
+ <div class="d-flex align-items-center justify-content-center m-3 " style="font-family: 'Bebas Neue', sans-serif;">
+     <h2 class="fs-1">Plant Accessories</h2>
+ </div>
+ <section>
+     <div class="container">
+         <div class="row g-4 ">
+            {% for accessory, id in sliced_accessories_and_ids %}
+             <div class="col-lg-3 col-sm-12 col-md-6">
+                 <article class="bg-white border border-1 rounded-2 p-2 ">
+                     <div class="p-3">
+                         <img src="static/image/spade_noun_002_34947-removebg-preview.png" class="img-fluid " alt="">
+                     </div>
+                     <div class=" p-2">
+                         <h4 style="font-family: 'Montserrat', sans-serif;" class="fw-semibold">{{accessory.product_name}}</h4>
+                         <p>{{accessory.product_description|truncatechars:100}}</p>
+                         <strong class="mb-1">${{accessory.product_price}}</strong>
+                         <article class="d-flex justify-content-between">
+                            <a href="#" class="p-2 mx-2 mt-2 my-md-2 text-decoration-none text-white rounded-2 " style="background-color: #26a826;">Add to cart</a>
+                        </article>
+                     </div>
+                 </article>
+             </div>
+             {% endfor %}
+         </div>
+     </div>
+ </section>
+{% endblock content %}

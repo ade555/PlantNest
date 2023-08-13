@@ -7,7 +7,7 @@ from users.models import User
 # a tuple to hold the product types
 PRODUCT_TYPE = (
 ('plant', 'Plant'),
-('accessory', 'Access0ry'),
+('accessory', 'Accessory'),
 )
 PLANT_CATEGORIES = (
     ('flowering', 'Flowering'),

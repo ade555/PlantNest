@@ -3,10 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView
+from django.views.generic import DeleteView, TemplateView, UpdateView
 
 from .models import User
-from .forms import UserDeleteForm
+from .forms import UserDeleteForm, UserProfileForm
 
 # custom 404 error page view
 def custom_404(request, exception):
@@ -36,3 +36,21 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
         user.delete()
         messages.success(request, 'Account successfully deleted')
         return super().delete(request, *args, **kwargs)
+
+
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'users/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
+
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserProfileForm
+    template_name = 'users/update_profile.html'
+    success_url = reverse_lazy('users:view-profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user

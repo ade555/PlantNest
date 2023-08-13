@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    input {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid #000;
+        outline: none;
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    form ::placeholder {
+        color: #000;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    form .form-wrapper1 {
+        display: flex;
+        gap: 20px;
+    }
+
+    input:focus {
+        border-color: #26a826;
+    }
+
+    input:focus::placeholder {
+        color: #26a826;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    textarea::placeholder {
+        font-family: 'Poppins', sans-serif;
+        color: #26a826;
+    }
+
+    textarea:focus {
+        border: 2px solid #26a826 !important;
+        outline: none;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    textarea:focus::placeholder {
+
+        color: #000;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .btn {
+        display: block;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        border: none;
+    }
+    .background-image {
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.463), rgba(0, 0, 0, 0.103)), url('{% static "images/feedback.jpg" %}');
+        background-size:contain ; /* Adjust as needed (cover, contain, etc.) */
+        background-repeat: no-repeat;
+        height: 400px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        background-position:center;
+    }
+</style>
+
+<link rel="stylesheet" href="{% static 'css/feedback.css' %}">
+<!-- background-image -->
+<section class="background-image  ">
+    <h1 class="text-white text-center  py-5">Let's have a little chat...</h1>
+</section>
+<!-- background-image end -->
+
+<div class="container-fluid ">
+    <div class="row">
+        <!-- Contact Info -->
+        <div class="col-lg-4 col-12 bottom-center-container text-center p-2 ">
+            <h2 class="text-color" style="margin-top: 100px;">Meet Us</h2>
+            <div class="contact-list">
+                <div class="contact-item">
+
+                    <p><i class="bi bi-telephone me-1 text-color"></i>+2349010750893</p>
+                </div>
+
+                <div class="contact-item">
+
+                    <p> <i class="bi bi-at text-color"></i>ademolathompson5@gmail.com</p>
+                </div>
+
+                <div class="contact-item">
+
+                    <p><i class="bi bi-geo-alt text-color"></i>No 1, Joju bustop,<br> ogbohu plaza, beside <br> Gt bank,
+                        Ota</p>
+
+                </div>
+            </div>
+        </div>
+        <!-- Organisation Location -->
+        <div class="col-lg-4 rounded-2  ">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3962.498186917684!2d3.235329373691419!3d6.7088890209839205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b995b41b7dd6d%3A0xb6c08985374e0e09!2sAptech%20Computer%20Education%20-Sango%20Ota!5e0!3m2!1sen!2sng!4v1691594446985!5m2!1sen!2sng"
+                width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+        <!-- Pitch Us -->
+        <div class="col-lg-4 col-12 text-center p-2 d-flex flex-column justify-content-center align-items-center  p-2">
+            <h2 class="px-3 text-color">Pitch Us</h2>
+            <p class="px-3">Hello, my name is <small class="text-color">yourname</small> and my email is <small
+                    class="text-color">youremail</small> and I would like to discuss about this <small
+                    class="text-color">Product.</small></p>
+            <button class="rounded-2 text-start shadow-sm">
+                <span class="circle1"></span>
+                <span class="circle2"></span>
+                <span class="circle3"></span>
+                <span class="circle4"></span>
+                <span class="circle5"></span>
+                <span class="text"><a href="signup.html" class="text-color">Sign Up</a></span>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="container p-3 mt-5">
+      <div class="row gx-5">
+          <div class="col-lg-6 col-sm-12 mb-5">
+              <div class="p-3">
+                  <img src="{% static 'images/feedback-form.jpg' %}" height="" class="rounded-2" alt="" style="height:445px;width:100%;">
+              </div>
+          </div>
+          <div class="col-lg-6 col-sm-12 mb-5">
+              <div class="p-3">
+                  <h2 class="text-center mb-3">We Want to Hear From You Today</h2>
+                  <form method="post">
+                    {% csrf_token %}
+                      <div class="col form-wrapper1">
+                        {{ form.name }}
+                        {{ form.name.errors|safe }}
+                      </div>
+                      <div class="d-flex">
+                        {{ form.email }}
+                        {{ form.email.errors|safe }}
+                      </div>
+  
+                      <div class="d-flex">
+                        {{ form.message }}
+                        {{ form.subject.errors|safe }}
+                      </div>
+                      <div class="btn">
+                        <button class="rounded-2 text-center shadow-sm">
+                              <span class="circle1"></span>
+                              <span class="circle2"></span>
+                              <span class="circle3"></span>
+                              <span class="circle4"></span>
+                              <span class="circle5"></span>
+                              <span class="text"><button type = "submit" class="text-color text-center">Submit Feedback</button></span>
+                        </button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+</div>
+{% endblock content %}

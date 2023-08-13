@@ -1,117 +1,124 @@
-$(".add-to-cart-btn").on("click", function(){
-  let product_id = $(this).data("product-id");
-  let quantity = $(".product_quantity_" + product_id).val();
-  let product_name = $(".product_name_" + product_id).val();
-  let product_price = $(".product_price").text();
-  let this_val = $(this);
 
-  $.ajax({
-    url: '/store/cart/',
-    data: {
-      'id': product_id,
-      'quantity': quantity,
-      'product_name': product_name,
-      'price': product_price
-    },
-    dataType: "json",
-    success: function (response) {
-      this_val.html("Added item to cart");
-      this_val.prop("disabled", true);
-    }
-  });
-});
-
-
-
-$(".add-to-wish-btn").on("click", function(){
-  let product_id = $(this).data("product-id");
-  let product_name = $(".product_name_" + product_id).val();
-  let this_val = $(this);
-
-  $.ajax({
-    url: '/store/wish/',
-    data: {
-      'id': product_id,
-      'product_name': product_name,
-    },
-    dataType: "json",
-    success: function (response) {
-      this_val.html("Added item to wish");
-      this_val.prop("disabled", true);
-    },
-    error: function (xhr) {
-      if (xhr.responseJSON && xhr.responseJSON.error === "Item already exists in the wishlist") {
-        alert("This item is already in your wishlist.");
+(function() {
+    "use strict";
+  })
+    /**
+     * Easy selector helper function
+     */
+    const select = (el, all = false) => {
+      el = el.trim()
+      if (all) {
+        return [...document.querySelectorAll(el)]
       } else {
-        alert("An error occurred while processing your request.");
+        return document.querySelector(el)
       }
     }
-  });
-});
-
-$(".remove-from-wishlist-btn").on("click", function() {
-  let product_id = $(this).data("product-id");
-  let this_val = $(this);
-
-  $.ajax({
-      url: '/store/remove_from_wishlist/', 
-      data: {
-          'id': product_id,
-      },
-      dataType: "json",
-      success: function(response) {
-          this_val.html("Removed from Wish List");
-          this_val.prop("disabled", true);
-      },
-      error: function(xhr) {
-          alert("An error occurred while processing your request.");
-      }
-  });
-});
-
-
-$(".wishlist-add-to-cart").on("click", function(){
-  let product_id = $(this).data("product-id");
-  let quantity = $(".product_quantity_" + product_id).val();
-  let product_name = $(".product_name_" + product_id).val();
-  let this_val = $(this);
-
-  $.ajax({
-    url: '/store/cart/',
-    data: {
-      'id': product_id,
-      'quantity': quantity,
-      'product_name': product_name,
-    },
-    dataType: "json",
-    success: function (response) {
-      this_val.html("Added item to cart");
-      this_val.prop("disabled", true);
-      // Now, also remove the item from the wishlist
-      $.ajax({
-        url: '/store/remove_from_wishlist/',
-        data: {
-          'id': product_id,
-        },
-        dataType: "json",
-        success: function (response) {
-          // Optionally, you can provide feedback to the user that the item has been removed from the wishlist
-          this_val.html("Removed item from wishlist");
-        },
-        error: function (xhr) {
-          console.log("Error removing item from wishlist");
+  
+    /**
+     * Easy event listener function
+     */
+    const on = (type, el, listener, all = false) => {
+      let selectEl = select(el, all)
+      if (selectEl) {
+        if (all) {
+          selectEl.forEach(e => e.addEventListener(type, listener))
+        } else {
+          selectEl.addEventListener(type, listener)
         }
-      });
+      }
     }
-  });
-});
-
-
-$(".empty-cart-btn").on("click", function(e) {
-  e.preventDefault();  // Prevent the default link behavior
-
-  // Show a confirmation dialog
-  if (confirm("Are you sure you want to empty your cart?")) {
-    window.location.href = $(this).attr("href");  // Proceed to the empty_cart URL
-  }
-});
+  
+    /**
+     * Easy on scroll event listener 
+     */
+    const onscroll = (el, listener) => {
+      el.addEventListener('scroll', listener)
+    }
+    /**
+     * Navbar links active state on scroll
+     */
+    let navbarlinks = select('#navbar .scrollto', true)
+    const navbarlinksActive = () => {
+      let position = window.scrollY + 200
+      navbarlinks.forEach(navbarlink => {
+        if (!navbarlink.hash) return
+        let section = select(navbarlink.hash)
+        if (!section) return
+        if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
+          navbarlink.classList.add('active')
+        } else {
+          navbarlink.classList.remove('active')
+        }
+      })
+    }
+    window.addEventListener('load', navbarlinksActive)
+    onscroll(document, navbarlinksActive)
+  
+    /**
+     * Scrolls to an element with header offset
+     */
+    const scrollto = (el) => {
+      let header = select('#header')
+      let offset = header.offsetHeight
+  
+      if (!header.classList.contains('header-scrolled')) {
+        offset -= 16
+      }
+  
+      let elementPos = select(el).offsetTop
+      window.scrollTo({
+        top: elementPos - offset,
+        behavior: 'smooth'
+      })
+    }
+  
+    /**
+     * Header fixed top on scroll
+     */
+    let selectHeader = select('#header')
+    if (selectHeader) {
+      let headerOffset = selectHeader.offsetTop
+      let nextElement = selectHeader.nextElementSibling
+      const headerFixed = () => {
+        if ((headerOffset - window.scrollY) <= 0) {
+          selectHeader.classList.add('fixed-top')
+          nextElement.classList.add('scrolled-offset')
+        } else {
+          selectHeader.classList.remove('fixed-top')
+          nextElement.classList.remove('scrolled-offset')
+        }
+      }
+      window.addEventListener('load', headerFixed)
+      onscroll(document, headerFixed)
+    }
+   
+   let backtotop = select('.back-to-top')
+   if (backtotop) {
+     const toggleBacktotop = () => {
+       if (window.scrollY > 100) {
+         backtotop.classList.add('active')
+       } else {
+         backtotop.classList.remove('active')
+       }
+     }
+     window.addEventListener('load', toggleBacktotop)
+     onscroll(document, toggleBacktotop)
+   }
+  
+     /**
+     * Mobile nav dropdowns activate
+     */
+     on('click', '.navbar .dropdown > a', function(e) {
+      if (select('#navbar').classList.contains('navbar-mobile')) {
+        e.preventDefault()
+        this.nextElementSibling.classList.toggle('dropdown-active')
+      }
+    }, true)
+  
+   let preloader = select('#preloader');
+   if (preloader) {
+     window.addEventListener('load', () => {
+       preloader.remove()
+     });
+   }
+   

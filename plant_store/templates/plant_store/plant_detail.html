@@ -1,15 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h3>{{ plant.product_name }}</h3>
-<p>Category: {{ plant.plant_category.plant_category_name }}</p>
-<p class = "product_price">Price: {{ plant.product_price }}</p>
-<p>Description: {{ plant.product_description }}</p>
-<input type="hidden" name="product_id" value="{{ plant.id }}" class="product_id_{{ plant.id }}">
-<input type="hidden" name="product_name" value="{{ plant.product_name }}" class="product_name_{{ plant.id }}">
-<input type="number" name="quantity" value="1" class="product_quantity_{{ plant.id }}">
-{% if plant.get_product_availability %}Out Of Stock{% endif %}
-<button type="button" class="add-to-cart-btn" data-product-id="{{ plant.id }}">Add to Cart</button>
-<a href="{% url 'add_review' product_id=plant.id %}">Review product</a>
+
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 ">
+            <img src="{{plant.product_image.url}}" class = "img-fluid" alt="">
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 ">
+           <h3 class=" mt-3 ">{{ plant.product_name }}</h3> 
+           <div class=" d-flex gap-2 mt-3 ">
+           </div>
+           <h2 class="price">${{ plant.product_price }}</h2>
+           <div class=" d-flex gap-2 mt-4 "><input type="hidden" name="product_id" value="{{ product_id }}" class="product_id_{{ product_id }}">
+            <input type="hidden" name="product_name" value="{{ plant.product_name }}" class="product_name_{{ product_id }}">
+            <input type="hidden" name="quantity" value="1" class="product_quantity_{{ product_id }}">
+            {% if plant.get_product_availability %}
+                <button role="button" class="add-to-cart-btn btn btn-style" disabled>Out of stock</button>
+            {% else %}
+                <button type="button" class="add-to-cart-btn btn btn-style" data-product-id="{{ product_id }}">Add to Cart</button>
+            {%endif%}
+            <button role="button" class="btn btn-style add-to-wish-btn" data-product-id="{{ product_id }}">Add to Wish List</button>
+           </div>
+           <h6 class="h6 mt-4">Product Details</h6>
+           <p class="mt-0 product-description">{{plant.product_description}} </p>
+           <a href="{% url 'add_review' product_id=product_id  %}" class="btn btn-style">Review product</a>
+        </div>
+    </div>
+    
+</div>
 {% endblock content %}
 

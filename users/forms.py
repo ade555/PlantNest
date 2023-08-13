@@ -9,7 +9,7 @@ from .models import User
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email']
+        fields = ['first_name', 'last_name', 'email', 'profile_picture']
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -29,10 +29,13 @@ class CustomSignupForm(SignupForm):
         self.fields['first_name'].widget.attrs.update({'placeholder': 'First Name', 'class': 'form-control'})
         self.fields['last_name'].widget.attrs.update({'placeholder': 'Last Name', 'class': 'form-control'})
         self.fields['email'].widget.attrs.update({'placeholder': 'Email', 'class': 'form-control'})
-        self.fields['password1'].widget.attrs.update({'placeholder': 'Password', 'class': 'form-control'})
+        self.fields['password1'].widget.attrs.update({'placeholder': 'Password', 'class': 'form-control', 'id': 'password'})
+        self.fields['username'].widget.attrs.update({'placeholder': 'Username', 'class': 'form-control'})
+        self.fields['phone_number'].widget.attrs.update({'placeholder': 'phone number', 'class': 'form-control', 'type':'tel'})
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
         self.fields['phone_number'].required = True
+        self.fields['username'].required = True
 
         # add a custom error class to display error messages
         self.error_class = DivErrorList
@@ -52,7 +55,7 @@ class CustomLoginForm(LoginForm):
         # add a custom css class to the fields
         super(CustomLoginForm, self).__init__(*args, **kwargs)
         self.fields['login'].widget.attrs.update({'placeholder': 'Username', 'class': 'form-control'})
-        self.fields['password'].widget.attrs.update({'placeholder': 'Password', 'class': 'form-control'})
+        self.fields['password'].widget.attrs.update({'placeholder': 'Password', 'class': 'form-control', 'id': 'password'})
         self.fields['remember'].widget.attrs.update({ 'class': 'form-check-input'})
         self.error_class = DivErrorList
 

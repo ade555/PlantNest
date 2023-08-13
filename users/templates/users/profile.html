@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+
+{% block title %} {{user.first_name}} {{user.last_name}} profile {% endblock title %}
+{% block content %}
+
+<div class="container my-3">
+    <div class="row">
+        <div class="col-md-4">
+            {% if user.profile_picture %}
+                <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="img-fluid">
+            {% else %}
+                <img src="/media/default.png" alt="Default Profile Picture" class="img-fluid">
+            {% endif %}
+        </div>
+        <div class="col-md-8 my-3">
+          <h1>{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</h1>
+          <form>
+            {% csrf_token %}
+            <div class="form-group my-3">
+              <label for="firstName" class="text-color"><b>First Name</b></label>
+              <input type="text" class="form-control" id="firstName" value="{{ user.first_name }}" readonly>
+            </div>
+            <div class="form-group my-3">
+              <label for="lastName" class="text-color"><b>Last Name</b></label>
+              <input type="text" class="form-control" id="lastName" value="{{ user.last_name }}" readonly>
+            </div>
+            <div class="form-group my-3">
+              <label for="email" class="text-color"><b>Email</b></label>
+              <input type="email" class="form-control" id="email" value="{{ user.email }}" readonly>
+            </div>
+            <div class="form-group my-3">
+              <label for="username" class="text-color"><b>Username</b></label>
+              <input type="email" class="form-control" id="email" value="{{ user.username }}" readonly>
+            </div>
+            <div class="form-group my-3">
+              <label for="username" class="text-color"><b>Phone Number</b></label>
+              <input type="email" class="form-control" id="email" value="{{ user.phone_number }}" readonly>
+            </div>
+            <a href="{% url 'users:update-profile' %}" class="btn text-bg-color text-white my-3"><b>Update Profile</b></a>
+          </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

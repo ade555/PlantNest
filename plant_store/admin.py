@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Plant, PlantCategory, CartItem, Cart, ProductReview
+from .models import AccessoryCategory, Plant, PlantCategory, CartItem, Cart, ProductReview, Accessory, AccessoryCategory
 
 from core.admin import custom_admin
 
@@ -43,3 +43,5 @@ custom_admin.register(Plant)
 custom_admin.register(PlantCategory)
 custom_admin.register(Cart, CartAdmin)
 custom_admin.register(ProductReview)
+custom_admin.register(Accessory)
+custom_admin.register(AccessoryCategory)

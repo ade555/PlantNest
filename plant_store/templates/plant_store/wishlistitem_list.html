@@ -1,19 +1,45 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<h3>Wish List</h3>
-{% for wish in wishes %}
-  <p>Product: {{ wish.product.product_name }}</p>
-  <p class="product_price">Price: ${{ wish.product.product_price }}</p>
-  <p>Description: {{ wish.product.product_description }}</p>
-  
-  <input type="hidden" name="product_id" value="{{ wish.product.id }}" class="product_id_{{ wish.product.id }}">
-  <input type="hidden" name="product_name" value="{{ wish.product.product_name }}" class="product_name_{{ wish.product.id }}">
-  <input type="hidden" name="quantity" value="1" class="product_quantity_{{ wish.product.id  }}">
-  
-  <button type="button" class="remove-from-wishlist-btn" data-product-id="{{ wish.product.id }}">Remove from Wish List</button>
-  <button type="button" class="add-to-cart-btn wishlist-add-to-cart" data-product-id="{{ wish.product.id }}">Add to Cart</button>
-  
-  {% if wish.product.get_product_availability %}Out Of Stock{% endif %}
-{% endfor %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8">
+      <h2 class="mb-3">Your Wishlist</h2>
+      <div class="scrollable-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for wish in wishes %}
+                <tr>
+                    <td>{{ wish.product.product_name }}</td>
+                    <td>${{ wish.product.product_price }} each</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                          <input type="hidden" name="product_id" value="{{ wish.product.id }}" class="product_id_{{ wish.product.id }}">
+                          <input type="hidden" name="product_name" value="{{ wish.product.product_name }}" class="product_name_{{ wish.product.id }}">
+                          <input type="hidden" name="quantity" value="1" class="product_quantity_{{ wish.product.id  }}">
+                          
+                          <button type="button" class="remove-from-wishlist-btn btn btn-danger" data-product-id="{{ wish.product.id }}">Remove from Wish List</button>
+                          {% if wish.product.get_product_availability %}
+                          <button role="button" class="add-to-cart-btn btn btn-styl mx-3" disabled>Out of stock</button>
+                      {% else %}
+                          <button type="button" class="mx-3 add-to-cart-btn btn btn-style" data-product-id="{{ product_id }}">Add to Cart</button>
+                      {%endif%}
+                        </div>
+                    </td>
+                </tr>
+                {%empty%}
+                <h2>You have no items in your wishlist</h2>
+                {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}

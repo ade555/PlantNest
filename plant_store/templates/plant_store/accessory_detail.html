@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 ">
+            <img src="{{accessory.product_image.url}}" class = "img-fluid" alt="">
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 ">
+           <h3 class=" mt-3 ">{{ accessory.product_name }}</h3> 
+           <div class=" d-flex gap-2 mt-3 ">
+           </div>
+           <h2 class="price">${{ accessory.product_price  }}</h2>
+           <div class=" d-flex gap-2 mt-4 "><input type="hidden" name="product_id" value="{{ product_id }}" class="product_id_{{ product_id }}">
+            <input type="hidden" name="product_name" value="{{ accessory.product_name }}" class="product_name_{{ product_id }}">
+            <input type="hidden" name="quantity" value="1" class="product_quantity_{{ product_id }}">
+            {% if accessory.get_product_availability %}
+                <button role="button" class="add-to-cart-btn btn btn-style" disabled>Out of stock</button>
+            {% else %}
+                <button type="button" class="add-to-cart-btn btn btn-style" data-product-id="{{ product_id }}">Add to Cart</button>
+            {%endif%}
+            <button role="button" class="btn btn-style add-to-wish-btn" data-product-id="{{ product_id }}">Add to Wish List</button>
+           </div>
+           <h6 class="h6 mt-4">Product Details</h6>
+           <p class="mt-0 product-description">{{accessory.product_description}}</p>
+           <a href="{% url 'add_review' product_id=product_id  %}" class="btn btn-style">Review product</a>
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}
+

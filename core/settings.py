@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     # custom apps
     'users',
     'plant_store',
+    'content_app',
 ]
 
 MIDDLEWARE = [

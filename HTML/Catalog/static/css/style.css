@@ -1,0 +1,44 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+:root{
+    --text-color:#78A300;
+    --background: #78A300;
+    --font-family:'Bebas Neue',sans-serif;
+  
+
+}
+.name{
+    font-family: var(--font-family);
+}
+
+
+.nav-link:hover{
+    border: none;
+  background-color:#26a826;
+  color: white;
+}
+
+.btn-1{
+    background-color:#26a826;
+    color: white;
+}
+.btn-1:hover{
+    background-color:#26a826;
+    color: white;
+}
+
+.cart{
+    color:#26a826;
+}
+.card-title{
+    color:#26a826;
+    font-family: var(--font-family);
+}
+
+
+.card-price{
+    color:#26a826;
+}

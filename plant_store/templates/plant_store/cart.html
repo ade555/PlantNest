@@ -1,28 +1,62 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Your Cart</h2>
-  <ul>
-    {% for cart_item in cart_items %}
-      <li>{{ cart_item.product.product_name }} - Quantity: {{ cart_item.quantity }}</li>
-      <form method="post" action="{% url 'cart' %}">
-        {% csrf_token %}
-        <input type="hidden" name="update_quantity" value="true">
-        <input type="hidden" name="cart_item_id" value="{{ cart_item.id }}">
-        <input type="number" name="new_quantity" value="{{ cart_item.quantity }}" min="1">
-        <button type="submit">Update Quantity</button>
-      </form>
-      <form method="post" action="{% url 'cart' %}">
-        {% csrf_token %}
-        <input type="hidden" name="remove" value="true">
-        <input type="hidden" name="cart_item_id" value="{{ cart_item.id }}">
-        <button type="submit">Remove</button>
-      </form>
-      {%empty%}
-      <h2>You have no items in your cart</h2>
-    {% endfor %}
-    <p>Total price: ${{total_amount}}</p>
-    <p>Total products amount: {{ total_cart_quantity|default:0  }}</p>
-    <a href="{% url 'empty_cart' %}" class="empty-cart-btn">Empty Cart</a>
-  </ul>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8">
+      <h2 class="mb-3">Your Cart Summary</h2>
+      <div class="scrollable-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for cart_item in cart_items %}
+                <tr>
+                    <td>{{ cart_item.product.product_name }}</td>
+                    <td>${{ cart_item.product.product_price }} each</td>
+                    <td>
+                      <form method="post" action="{% url 'cart' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="update_quantity" value="true">
+                        <input type="hidden" name="cart_item_id" value="{{ cart_item.id }}">
+                        <input type="number" name="new_quantity" value="{{ cart_item.quantity }}" class="form-control" style="max-width: 70px;" min="1">
+                        <button type="submit" class="btn text-bg-color text-white my-3">Update</button>
+                    </td>
+                    <td>
+                        <div>
+                            <form method="post" action="{% url 'cart' %}">
+                              {% csrf_token %}
+                              <input type="hidden" name="remove" value="true">
+                              <input type="hidden" name="cart_item_id" value="{{ cart_item.id }}">
+                              <button type="submit" class="btn btn-danger mx-3">Remove</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {%empty%}
+                <h2>You have no items in your cart</h2>
+                {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-4 mt-3 mt-md-0">
+        <h2 class="mb-3">Total</h2>
+        <div class="card">
+            <div class="card-body">
+                <p>Total Quantity: <span id="totalQuantity">{{ total_cart_quantity|default:0  }}</span></p>
+                <p>Total Price: <span id="totalPrice">${{total_amount}}</span></p>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
