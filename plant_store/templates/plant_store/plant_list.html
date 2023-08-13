@@ -1,39 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for category in plant_categories %}
-{% if category == plant.plant_category.plant_category_name %}
-<p>plant own: {{plant.plant_category.plant_category_name}}</p>
-<p> cat: {{category}}</p>
-{% endif %}
-{% for plant, product_id in plants_and_ids %}
-<p>plant own: {{plant.plant_category.plant_category_name}}</p>
-<p> cat: {{category}}</p>
-{% endfor %}
-{% endfor %}
 <section class="container-fluid p-3 mt-5">
-  <h3>Plant List</h3>
-  
-  <ul class="nav nav-pills mb-3 gap-3  " id="pills-tab" role="tablist">
-    {% for category in plant_categories %}
-    <li class="nav-item nav-and-tab" role="presentation">
-      <button class="nav-link {% if category == "flowering" %} active {% endif %} link" id="pills-{{category}}-tab" data-bs-toggle="pill" data-bs-target="#pills-{{category}}" type="button" role="tab" aria-controls="pills-{{category}}" {% if category == "flowering" %} aria-selected="true" {% else %} aria-selected="false" {% endif %}>{{category}}</button>
-    </li>
-    {% endfor %}
-  </ul>
-
-
-<div class="tab-content" id="pills-tabContent">
-  {% for category in plant_categories %}
-
-  <div class="tab-pane {% if category == 'flowering' %} show active {% endif %} fade" id="pills-{{ category }}" role="tabpanel" aria-labelledby="pills-{{category}}-tab">
-    <h2 class="text-center mt-5 name">{{ category|capfirst }} Plants</h2>
+  <h3 class="text-center">Plant List</h3>
+<div>
     <div class="container mt-5">
       <div class="row">
-        
+
         {% for plant, product_id in plants_and_ids %}
-        {{plant.plant_category.plant_category_name}},,, {{category}}
-        {% if plant.plant_category.plant_category_name == category %}
 
         <div class="col-lg-3 col-sm-9 col-md-6 mb-5 mx-auto ">
           <div class="card">
@@ -49,23 +23,25 @@
              <!-- product info to send to server end-->
 
               <div class="" style="display: flex;justify-content:space-between;">
+                {% if request.user.is_authenticated %}
                 {% if plant.get_product_availability %}
                 <button role="button" class="add-to-cart-btn btn-1 btn" disabled>Out of stock</button>
                 {% else %}
                 <button role="button" class="add-to-cart-btn" data-product-id="{{ product_id }}"><i class="bi bi-cart4 fs-3 cart"></i></button>
                 {% endif %}
                 <button role="button" class="btn btn-1 add-to-wish-btn" data-product-id="{{ product_id }}"><i class="bi bi-heart"></i></button>
+                {% else %}
+                <button role="button" class="add-to-cart-btn btn-1 btn" disabled>Login to add to cart</button>
+                {% endif %}
               </div>
               <a href="{% url 'plant-detail' pk=product_id %}">Details</a>
             </div>
           </div>
         </div>
-        {% endif %}
         {% endfor %}
       </div>
     </div>
   </div>
-  {% endfor %}
 </div>
 </section>
 
